@@ -9,6 +9,11 @@ export default makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    pagination: {
+        borderRadius: 4,
+        marginTop: '1rem',
+        padding: '16px'
+    },
     heading: {
         color: 'rgba(0,183,255, 1)'
     },
