@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 
@@ -11,6 +10,7 @@ import PostDetails from './components/PostDetails/PostDetails';
 const App = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
     return (
+
         <BrowserRouter>
             <Container maxWidth = "xl">
                 <Navbar />

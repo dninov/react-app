@@ -4,13 +4,15 @@ import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
+import { useNavigate } from 'react-router-dom';
 
 export default function Form ({ currentId, setCurrentId }) {
     const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: '' });
-    const post = useSelector((state) => currentId ? state.posts.find((post) => post._id === currentId) : null);
+    const post = useSelector((state) => currentId ? state.posts.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (post) setPostData(post);
