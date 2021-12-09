@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, NavLink } from 'react-router-dom';
 import { AppBar, Avatar, Toolbar, Typography, Button } from '@material-ui/core';
 import useStyles from './styles';
-import memories from '../../images/memories.png';
+import logo from '../../images/logo.png';
 import decode from 'jwt-decode';
 
 function Navbar () {
@@ -32,8 +32,9 @@ function Navbar () {
     return (
         <AppBar className = {classes.appBar} position="static" color="inherit">
             <div className={classes.brandContainer}>
-                <Typography component={Link} to="/" className = {classes.heading} variant="h2" align="center">Memories</Typography>
-                <img className = {classes.image} src={memories} alt="memories" height="60" />
+                <NavLink to="/">
+                    <img className = {classes.image} src={logo} alt="logo" height="70" />
+                </NavLink>
             </div>
             <Toolbar className={classes.toolbar}>
                 {user
