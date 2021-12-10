@@ -51,9 +51,9 @@ function Home () {
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <AppBar className={classes.appBarSearch} position="static" color="inherit">
-                            <TextField name="search" variant="outlined" label="Search" fullWidth value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={handleKeyPress}/>
-                            <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined"/>
-                            <Button className={classes.searchButton} onClick={searchPost} color="primary" variant="contained" >Search</Button>
+                            <TextField name="search" variant="outlined" label="Продукт" fullWidth value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={handleKeyPress}/>
+                            <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Град" variant="outlined"/>
+                            <Button className={classes.searchButton} onClick={searchPost} color="primary" variant="contained" >ТЪРСИ</Button>
                         </AppBar>
                         <Form currentId={currentId} setCurrentId={setCurrentId}/>
                         <Paper className={classes.pagination} elevation={6}>
