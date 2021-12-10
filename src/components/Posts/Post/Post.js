@@ -32,7 +32,7 @@ export default function Post ({ post, setCurrentId }) {
     };
 
     const openPost = () => navigate(`/posts/${post._id}`);
-
+    console.log(post.tags);
     return (
         <Card className={classes.card} raised elevation={6} component="span" >
             <ButtonBase className={classes.cardAction} onClick={openPost}>
@@ -49,7 +49,9 @@ export default function Post ({ post, setCurrentId }) {
                     </div>
                 )}
                 <div className={classes.details}>
-                    <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag} `)}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                        {post.tags[0] !== '' ? `Доставя до ${post.tags.map((tag) => `${tag} `)}` : 'Не извършва доставка'}
+                    </Typography>
                 </div>
                 <Typography className={classes.title} variant="h5" gutterBottom>{post.title}</Typography>
                 <CardContent>
