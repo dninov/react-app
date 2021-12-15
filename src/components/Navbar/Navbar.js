@@ -21,11 +21,15 @@ function Navbar () {
     const create = () => {
         navigate('/create');
     };
+    const openProfile = () => {
+        navigate(`/profile/${user.result._id}`);
+    };
 
     useEffect(() => {
         const token = user?.token;
 
         if (token) {
+            console.log(user);
             const decodedToken = decode(token);
             if (decodedToken.exp * 1000 < new Date().getTime()) logout();
         }
@@ -43,7 +47,7 @@ function Navbar () {
                 {user
                     ? (
                         <div className={classes.profile}>
-                            <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
+                            <Avatar className={classes.purple} alt={user.result.name} src={user?.result?.avatar} onClick={openProfile}>{user.result.name.charAt(0)}</Avatar>
                             <Typography className={classes.username} variant="h6">{user.result.name}</Typography>
                             <Button variant="contained" className={classes.logout} color="secondary" onClick={logout} >ИЗХОД</Button>
                             <Button variant="contained" className={classes.logout} color="primary" onClick={create} >СЪЗДАЙ</Button>

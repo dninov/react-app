@@ -6,6 +6,7 @@ import FileInputComponent from 'react-file-input-previews-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
+
 import { useNavigate } from 'react-router-dom';
 import { cities } from './cities';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,12 +21,13 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 export default function Form ({ currentId, setCurrentId }) {
     const cityNames = cities;
-    const [hide, setHide] = useState(false);
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const [hide, setHide] = useState(user?.result?.towns.length > 0);
+    const [checked, setChecked] = useState(user?.result?.towns.length > 0);
     const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: '' });
     const post = useSelector((state) => currentId ? state.posts.posts.find((post) => post._id === currentId) : null);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,7 +38,7 @@ export default function Form ({ currentId, setCurrentId }) {
         e.preventDefault();
 
         if (currentId !== 0) {
-            dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
+            dispatch(createPost({ ...postData, name: user?.result?.name, creator_id: user?.result?._id }, navigate));
         } else {
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
         }
@@ -55,7 +57,7 @@ export default function Form ({ currentId, setCurrentId }) {
 
     const clear = () => {
         setCurrentId(0);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '' });
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', telephone: '' });
     };
 
     const onTagsChange = (event, values) => {
@@ -70,8 +72,12 @@ export default function Form ({ currentId, setCurrentId }) {
                 <Typography variant="h6">{currentId ? 'Промяна' : 'Създаване' } на обява</Typography>
                 <TextField name="title" variant="outlined" label="Продукт" fullWidth value={postData.title} onChange={ (e) => setPostData({ ...postData, title: e.target.value })} />
                 <TextField name="message" variant="outlined" label="Описание" fullWidth value={postData.message} onChange={ (e) => setPostData({ ...postData, message: e.target.value })} />
+                <TextField name="telephone" variant="outlined" label="Телефон" fullWidth value={postData.telephone} defaultValue={user?.result?.telephone} onChange={ (e) => setPostData({ ...postData, telephone: e.target.value })} />
                 <FormControlLabel
-                    control={<Checkbox name="checkedA" onChange={ (e) => { setHide((oldState) => !oldState); }}/>}
+                    control={<Checkbox name="checkedA" checked={ checked } onChange={ (e) => {
+                        setHide((oldState) => !oldState);
+                        setChecked((oldState) => !oldState);
+                    }}/>}
                     label="Доставка до адрес"
                 />
                 { hide &&

@@ -3,7 +3,6 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@materi
 import { useNavigate, useLocation } from 'react-router';
 import ChipInput from 'material-ui-chip-input';
 import Posts from '../Posts/Posts';
-import Form from '../Form/Form';
 import { useDispatch } from 'react-redux';
 import { getPosts, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
@@ -55,7 +54,6 @@ function Home () {
                             <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Град" variant="outlined"/>
                             <Button className={classes.searchButton} onClick={searchPost} color="primary" variant="contained" >ТЪРСИ</Button>
                         </AppBar>
-                        <Form currentId={currentId} setCurrentId={setCurrentId}/>
                         <Paper className={classes.pagination} elevation={6}>
                             <Pagination page={page}/>
                         </Paper>

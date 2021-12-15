@@ -37,6 +37,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center'
     },
     purple: {
+        cursor: 'pointer',
         color: theme.palette.getContrastText(deepPurple[500]),
         backgroundColor: deepPurple[500]
     }

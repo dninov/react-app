@@ -32,7 +32,7 @@ export default function Post ({ post, setCurrentId }) {
     };
 
     const openPost = () => navigate(`/posts/${post._id}`);
-    console.log(post.tags);
+    console.log(post);
     return (
         <Card className={classes.card} raised elevation={6} component="span" >
             <ButtonBase className={classes.cardAction} onClick={openPost}>
