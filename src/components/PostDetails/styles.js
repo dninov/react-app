@@ -9,12 +9,7 @@ export default makeStyles((theme) => ({
 
     },
     card: {
-        display: 'flex',
-        width: '100%',
-        [theme.breakpoints.down('sm')]: {
-            flexWrap: 'wrap',
-            flexDirection: 'column'
-        }
+
     },
     section: {
         borderRadius: '20px',

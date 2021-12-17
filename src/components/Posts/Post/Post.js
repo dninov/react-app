@@ -32,25 +32,29 @@ export default function Post ({ post, setCurrentId }) {
     };
 
     const openPost = () => navigate(`/posts/${post._id}`);
-    console.log(post);
+    const detailsHandler = () => {
+        setCurrentId(post._id);
+        navigate(`/edit/${post._id}`);
+    };
     return (
         <Card className={classes.card} raised elevation={6} component="span" >
+            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                <div className={classes.overlay2}>
+                    {/* <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}> */}
+                    <MoreHorizIcon style={{ color: 'white' }} fontSize="medium" onClick={() => detailsHandler()}/>
+                    {/* </Button> */}
+                </div>
+            )}
             <ButtonBase className={classes.cardAction} onClick={openPost}>
                 <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
                 <div className={classes.overlay}>
                     <Typography variant="h6">{post.name}</Typography>
                     <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                 </div>
-                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
-                    <div className={classes.overlay2}>
-                        {/* <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}> */}
-                        <MoreHorizIcon style={{ color: 'white' }} fontSize="medium" onClick={() => setCurrentId(post._id)}/>
-                        {/* </Button> */}
-                    </div>
-                )}
+
                 <div className={classes.details}>
                     <Typography variant="body2" color="textSecondary">
-                        {post.tags[0] !== '' ? `Доставя до ${post.tags.map((tag) => `${tag} `)}` : 'Не извършва доставка'}
+                        {post.tags.length !== 0 ? `Доставя до ${post.tags.map((tag) => `${tag} `)}` : 'Не извършва доставка'}
                     </Typography>
                 </div>
                 <Typography className={classes.title} variant="h5" gutterBottom>{post.title}</Typography>

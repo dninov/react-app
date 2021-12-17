@@ -11,19 +11,22 @@ import Profile from './components/Profile/Profile';
 
 const App = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
+    console.log(user);
     return (
 
         <BrowserRouter>
             <Container maxWidth = "xl">
                 <Navbar />
                 <Routes >
-                    <Route path="/" element={<Home/>} />
+                    <Route path="/" element={<Navigate replace to="/posts" />} />
                     <Route path="/posts" element={<Home/>} />
                     <Route path="/posts/search" element={<Home/>} />
                     <Route path="/posts/:id" element={<PostDetails/>} />
                     <Route path="/create" element={<Create/>} />
-                    <Route path="/profile/:id" element={<Profile/>} />
-                    <Route path="/auth" element={!user ? <Auth /> : <Navigate replace to="/" />} />
+                    <Route path="/edit/:id" element={<Create/>} />
+                    {/* <Route path="/profile/:id" element={!user ? <Navigate replace to="/auth" /> : <Profile />} /> */}
+                    <Route path="/profile/:id" element={<Profile />} />
+                    <Route path="/auth" element={ <Auth />} />
                 </Routes>
             </Container>
         </BrowserRouter>

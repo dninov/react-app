@@ -16,10 +16,17 @@ export default makeStyles((theme) => ({
     },
     fileInput: {
         width: '97%',
-        margin: '10px 0'
+        margin: '10px 0',
+        textAlign: 'center'
     },
     buttonSubmit: {
         marginBottom: 10
+    },
+    submitButtons: {
+        marginTop: 40
+    },
+    loadingPaper: {
+        display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '15px', height: '39vh'
     }
 
 }));
