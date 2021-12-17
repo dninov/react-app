@@ -14,6 +14,7 @@ const initialState = { firstName: '', lastName: '', email: '', password: '', con
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState({ confirmPassword: { error: false, message: '' }, email: { error: false, message: '' }, firstName: { error: false, message: '' }, lastName: { error: false, message: '' }, password: { error: false, message: '' } });
     const [isSignup, setIsSignup] = useState(false);
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
@@ -21,17 +22,58 @@ const Auth = () => {
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (validateData() === false) {
+            return;
+        }
         if (isSignup) {
-            dispatch(signup(formData, navigate));
+            dispatch(signup(formData, navigate)).then((r) => {
+                if (r.response.data.message === 'User already exist.') {
+                    setErrors({ ...errors, email: { error: true, message: 'Имейлът е вече регистриран' } });
+                }
+                console.log(r.response.data.message);
+            });
         } else {
             dispatch(signin(formData, navigate));
         }
     };
+    const validateData = () => {
+        if (isSignup) {
+            if (formData.firstName === '') {
+                setErrors({ ...errors, firstName: { error: true, message: 'Моля попълнете Име' } });
+                return false;
+            }
+            if (formData.lastName === '') {
+                setErrors({ ...errors, lastName: { error: true, message: 'Моля попълнете Име' } });
+                return false;
+            }
+            if (formData.email === '') {
+                setErrors({ ...errors, email: { error: true, message: 'Моля попълнете Имейл' } });
+                return false;
+            }
+            if (formData.password !== formData.confirmPassword) {
+                setErrors({ ...errors, password: { error: true, message: 'Паролите не съвпадат' }, confirmPassword: { error: true, message: 'Паролите не съвпадат' } });
+                return false;
+            }
+        } else {
+            if (formData.email === '') {
+                setErrors({ ...errors, email: { error: true, message: 'Моля попълнете Имейл' } });
+                return false;
+            }
+            if (formData.password === '') {
+                setErrors({ ...errors, password: { error: true, message: 'Моля попълнете Парола' } });
+                return false;
+            }
+        }
+
+        return true;
+    };
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setErrors({ confirmPassword: { error: false, message: '' }, email: { error: false, message: '' }, firstName: { error: false, message: '' }, lastName: { error: false, message: '' }, password: { error: false, message: '' } });
     };
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
+        setErrors({ confirmPassword: { error: false, message: '' }, email: { error: false, message: '' }, firstName: { error: false, message: '' }, lastName: { error: false, message: '' }, password: { error: false, message: '' } });
         setShowPassword(false);
     };
     const googleSuccess = async (res) => {
@@ -59,13 +101,13 @@ const Auth = () => {
                     <Grid container spacing={2}>
                         { isSignup && (
                             <>
-                                <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half></Input>
-                                <Input name="lastName" label="Last Name" handleChange={handleChange} half></Input>
+                                <Input error={errors.firstName.error} helperText={errors.firstName.message} name="firstName" label="Име" handleChange={handleChange} autoFocus half></Input>
+                                <Input error={errors.lastName.error} helperText={errors.lastName.message} name="lastName" label="Фамилия" handleChange={handleChange} half></Input>
                             </>
                         )}
-                        <Input name="email" label="Email Address" handleChange={handleChange} type="email"/>
-                        <Input name="password" label="Password" handleChange={handleChange} type={ showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword}/>
-                        { isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password"/>}
+                        <Input error={errors.email.error} helperText={errors.email.message} name="email" label="Имейл" handleChange={handleChange} type="email"/>
+                        <Input error={errors.password.error} helperText={errors.password.message} name="password" label="Парола" handleChange={handleChange} type={ showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword}/>
+                        { isSignup && <Input error={errors.confirmPassword.error} helperText={errors.confirmPassword.message} name="confirmPassword" label="Повтори Парола" handleChange={handleChange} type="password"/>}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                         { isSignup ? 'Sign Up' : 'Sign In'}
