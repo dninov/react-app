@@ -21,6 +21,9 @@ User based product market.
 - [Material UI](https://www.npmjs.com/package/@material-ui/core)
 - [React-Redux](https://www.npmjs.com/package/react-redux)
 
+## Server
+- [Node Server](https://github.com/dninov/express-server)
+
 ## Project Architecture
 - Auth Component
   - Manages signIn and signUp actions.
