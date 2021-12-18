@@ -1,9 +1,8 @@
 import * as api from '../api';
-import { CLEAR_POST, FETCH_POST, START_LOADING, END_LOADING, FETCH_BY_SEARCH, FETCH_ALL, CREATE, DELETE, LIKE, UPDATE } from '../constants/actionTypes';
+import { COMMENT, CLEAR_POST, FETCH_POST, START_LOADING, END_LOADING, FETCH_BY_SEARCH, FETCH_ALL, CREATE, DELETE, LIKE, UPDATE } from '../constants/actionTypes';
 
 export const getPost = (id) => async (dispatch) => {
     try {
-        console.log('getPost');
         dispatch({ type: START_LOADING });
         const { data } = await api.fetchPost(id);
         dispatch({ type: FETCH_POST, payload: data });
@@ -15,7 +14,6 @@ export const getPost = (id) => async (dispatch) => {
 
 export const clearPost = () => async (dispatch) => {
     try {
-        console.log('clearPost');
         dispatch({ type: CLEAR_POST });
     } catch (error) {
         console.log(error.message);
@@ -26,7 +24,6 @@ export const getPosts = (page) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
         const { data } = await api.fetchPosts(page);
-        console.log('GET: ', data);
         dispatch({ type: FETCH_ALL, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {
@@ -38,7 +35,6 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
         const { data } = await api.getPostsBySearch(searchQuery);
-        console.log(data);
         dispatch({ type: FETCH_BY_SEARCH, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {
@@ -93,6 +89,15 @@ export const likePost = (id) => async (dispatch) => {
         const { data } = await api.likePost(id);
 
         dispatch({ type: LIKE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const commentPost = (value, id) => async (dispatch) => {
+    try {
+        const { data } = await api.comment(value, id);
+        dispatch({ type: COMMENT, payload: data });
+        return data.comments;
     } catch (error) {
         console.log(error);
     }

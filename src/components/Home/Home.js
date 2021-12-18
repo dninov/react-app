@@ -3,7 +3,7 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Toolbar } from
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useNavigate, useLocation } from 'react-router';
 import Posts from '../Posts/Posts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPosts, getPostsBySearch, clearPost } from '../../actions/posts';
 import useStyles from './styles';
 import Pagination from '../Pagination';
@@ -25,7 +25,13 @@ function Home () {
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
-    dispatch(clearPost());
+    const posts = useSelector((state) => state.posts);
+
+    useEffect(() => {
+        if (posts.post?._id) {
+            dispatch(clearPost());
+        }
+    }, [posts]);
     const searchPost = () => {
         if (search.trim() || tags.length > 0) {
             setIsSearch(prevState => !prevState);
@@ -36,9 +42,7 @@ function Home () {
             dispatch(getPosts(page));
         }
     };
-    useEffect(() => {
-        console.log(isSearch);
-    }, [isSearch]);
+
     const handleKeyPress = (e) => {
         if (e.keyCode === 13) {
             searchPost();
@@ -57,9 +61,9 @@ function Home () {
     };
     return (
         <Grow in>
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" >
                 <Paper elevation={6}>
-                    <Grid container spacing={2} className={classes.appBarSearch} >
+                    <Grid container spacing={2} className={classes.appBarSearch}>
                         <Grid item lg={4} xs={12}>
                             <TextField className={classes.searchInput} edge="start" name="search" variant="outlined" label="Продукт" value={search} onChange={(e) => setSearch(e.target.value)} onKeyPress={handleKeyPress}/>
                         </Grid>
@@ -82,14 +86,16 @@ function Home () {
                     </Grid>
                 </Paper>
 
-                <Grid className={classes.gridContainer} container justifyContent ="space-between" alignItems="stretch" spacing={3}>
+                <Grid className={classes.gridContainer} container justifyContent ="center" alignItems="center" spacing={3}>
                     <Grid item xs={12} sm={6} md={9}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
 
                 </Grid>
                 <Paper className={classes.pagination} elevation={6}>
-                    <Pagination page={page} isSearch={isSearch} />
+                    <Grid container className={classes.paginationContainer} justifyContent ="center" alignItems="center" >
+                        <Pagination page={page} isSearch={isSearch} />
+                    </Grid>
                 </Paper>
             </Container>
         </Grow>

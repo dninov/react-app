@@ -21,6 +21,9 @@ export default makeStyles((theme) => ({
         marginTop: '1rem',
         padding: '16px'
     },
+    paginationContainer: {
+        // maxWidth: '400px'
+    },
     gridContainer: {
         [theme.breakpoints.down('xs')]: {
             flexDirection: 'column-reverse'

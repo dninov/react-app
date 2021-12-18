@@ -21,7 +21,6 @@ const Paginate = ({ page, isSearch }) => {
     const [tagsS, setTags] = useState(tags);
 
     useEffect(() => {
-        console.log(searchQuery);
         if (page && searchQuery === null) {
             dispatch(getPosts(page));
         } else {

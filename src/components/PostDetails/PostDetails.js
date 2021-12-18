@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPost, getPostsBySearch } from '../../actions/posts';
+import CommentSection from './CommentSection';
 import useStyles from './styles';
 
 const PostDetails = () => {
@@ -14,14 +15,12 @@ const PostDetails = () => {
     const { posts } = useSelector((state) => state.posts);
     const { isLoading } = useSelector((state) => state.posts);
     const { id } = useParams();
-    console.log(post);
     useEffect(() => {
         dispatch(getPost(id));
     }, [id]);
 
     useEffect(() => {
         if (post) {
-            console.log(post?.tags);
             dispatch(getPostsBySearch({ searchQuery: 'none', tags: post?.tags?.join(','), page: 1 }));
         }
     }, [post]);
@@ -43,7 +42,7 @@ const PostDetails = () => {
                 <Grid item md={6} xs={12}>
                     <div className={classes.section}>
                         <Typography variant="h3" component="h2">{post.title}</Typography>
-                        <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post?.tags?.length > 0 ? 'Доставя до ' + post.tags.map((tag) => ` ${tag} `) : 'Изпраща по куриер' }</Typography>
+                        <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post?.tags?.length > 0 ? 'Доставя до ' + post.tags.map((tag) => ` ${tag} `) : 'Не изпраща по куриер' }</Typography>
                         <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
                         <Typography variant="h6">Обява от: {post.name}</Typography>
                         <Typography gutterBottom variant="body1" color="textSecondary" component="p">Телефон: {post.telephone}</Typography>
@@ -56,6 +55,10 @@ const PostDetails = () => {
                     </div>
                 </Grid>
             </Grid>
+            <div className={classes.section}>
+                <Divider style={{ marginTop: '40px', marginBottom: '40px' }} />
+                <CommentSection post={post}/>
+            </div>
             {recommendedPosts.length && (
                 <div className={classes.section}>
                     <Typography gutterBottom variant="h5">Други продукти за региона:</Typography>

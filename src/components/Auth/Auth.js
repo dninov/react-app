@@ -27,13 +27,23 @@ const Auth = () => {
         }
         if (isSignup) {
             dispatch(signup(formData, navigate)).then((r) => {
-                if (r.response.data.message === 'User already exist.') {
-                    setErrors({ ...errors, email: { error: true, message: 'Имейлът е вече регистриран' } });
+                if (r) {
+                    if (r.response.data.message === 'User already exist.') {
+                        setErrors({ ...errors, email: { error: true, message: 'Имейлът е вече регистриран' } });
+                    }
                 }
-                console.log(r.response.data.message);
             });
         } else {
-            dispatch(signin(formData, navigate));
+            dispatch(signin(formData, navigate)).then((r) => {
+                if (r) {
+                    if (r.response.data.message === 'User doesn\'t exist.') {
+                        setErrors({ ...errors, email: { error: true, message: 'Няма потребител с такъв имейл' } });
+                    }
+                    if (r.response.data.message === 'Invalid Credentials') {
+                        setErrors({ ...errors, password: { error: true, message: 'Потребителят или паролата са грешни' } });
+                    }
+                }
+            });
         }
     };
     const validateData = () => {

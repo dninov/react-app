@@ -58,7 +58,11 @@ export default function Form ({ currentId, setCurrentId }) {
     }, [post]);
 
     const setTabs = () => {
+        console.log('INITIAL CHECK VALUE: ', checked);
         if (checked === false) {
+            setChecked(true);
+        } else {
+            setChecked(false);
             setPostData({ ...postData, tags: [] });
         }
     };
@@ -150,13 +154,12 @@ export default function Form ({ currentId, setCurrentId }) {
             <Paper className={classes.paper} elevation={6}>
                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                     <Typography variant="h6">{id ? 'Промяна' : 'Създаване' } на обява</Typography>
-                    <TextField name="title" variant="outlined" label="Продукт" fullWidth value={postData?.title} onChange={ (e) => setPostData({ ...postData, title: e.target.value })} />
-                    <TextField name="message" variant="outlined" label="Описание" fullWidth value={postData?.message} onChange={ (e) => setPostData({ ...postData, message: e.target.value })} />
-                    <TextField name="telephone" variant="outlined" label="Телефон" fullWidth value={postData?.telephone} onChange={ (e) => setPostData({ ...postData, telephone: e.target.value })} />
+                    <TextField name="title" variant="outlined" label="Продукт" fullWidth value={postData?.title || ''} onChange={ (e) => setPostData({ ...postData, title: e.target.value })} />
+                    <TextField name="message" variant="outlined" label="Описание" fullWidth value={postData?.message || ''} onChange={ (e) => setPostData({ ...postData, message: e.target.value })} />
+                    <TextField name="telephone" variant="outlined" label="Телефон" fullWidth value={postData?.telephone || ''} onChange={ (e) => setPostData({ ...postData, telephone: e.target.value })} />
                     <FormControlLabel
                         control={<Checkbox name="checkedA" checked={ checked } onChange={ (e) => {
                             setHide((oldState) => !oldState);
-                            setChecked((oldState) => !oldState);
                             setTabs();
                         }}/>}
                         label="Доставка до адрес"
